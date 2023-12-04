@@ -4,7 +4,7 @@
 #include <string.h>
 #include <winsock2.h>
 
-#define PORT 12345
+#define PORT 19019
 #define MAX_CLIENTS 5
 
 void error(char *msg) {
