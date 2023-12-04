@@ -31,7 +31,7 @@ int main() {
 
     // Configure server address
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1"); // Change this to the server's IP address
+    serverAddr.sin_addr.s_addr = inet_addr("192.168.1.6"); // Change this to the server's IP address
     serverAddr.sin_port = htons(PORT);
 
     // Connect to server
