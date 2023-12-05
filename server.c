@@ -86,7 +86,7 @@ void handleClient(void *clientSocket) {
     if (clientGuess == hiddenHand) {
         send(socket, "Correct! You guessed the right hand.", sizeof(buffer), 0);
     } else {
-        send(socket, "Incorrect! answer is: %d", sizeof(buffer), 0, hiddenHand);
+        send(socket, "Incorrect!You picked the wrong hand", sizeof(buffer), 0);
     }
 
     // Close the client socket when done
