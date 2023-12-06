@@ -71,23 +71,37 @@ void handleClient(void *clientSocket) {
     SOCKET socket = *((SOCKET *)clientSocket);
     char buffer[256];
 
-    // Generate a random number (0 or 1) to represent the hidden hand
-    int hiddenHand = rand() % 2;
+    while (1) {
+        // Generate a random number (0 or 1) to represent the hidden hand
+        int hiddenHand = rand() % 2;
 
-    // Send the hidden hand to the client
-    sprintf(buffer, "%d", hiddenHand);
-    send(socket, buffer, strlen(buffer), 0);
+        // Send the hidden hand to the client
+        sprintf(buffer, "%d", hiddenHand);
+        send(socket, buffer, strlen(buffer), 0);
 
-    // Receive the client's guess
-    recv(socket, buffer, sizeof(buffer), 0);
-    int clientGuess = atoi(buffer);
+        // Receive the client's guess
+        recv(socket, buffer, sizeof(buffer), 0);
+        
+        if (buffer[0] == 'x') {
+            // Exit the game if 'x' is received
+            break;
+        } 
 
-    // Check if the guess is correct
-    if (clientGuess == hiddenHand) {
-        send(socket, "Correct! You guessed the right hand.", sizeof(buffer), 0);
-    } else {
-        send(socket, "Incorrect! You picked the wrong hand", sizeof(buffer), 0);
+        int clientGuess = atoi(buffer);
+
+        // Check if the guess is correct
+        if (clientGuess == hiddenHand) {
+            send(socket, "Correct! You guessed the right hand.", sizeof(buffer), 0);
+        } else if (clientGuess > 1){
+            send(socket, "Input Unrecognized", sizeof(buffer), 0);
+        } else {
+            send(socket, "Incorrect! You picked the wrong hand", sizeof(buffer), 0);
+        }
     }
+
+    // Send game over message to the client
+    sprintf(buffer, "Game over. Thanks for playing!");
+    send(socket, buffer, strlen(buffer), 0);
 
     // Close the client socket when done
     closesocket(socket);
