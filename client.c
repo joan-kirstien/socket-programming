@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,21 +40,27 @@ int main() {
 
     printf("Connected to server\n");
 
-    // Receive the hidden hand from the server
-    recv(clientSocket, buffer, sizeof(buffer), 0);
-    int hiddenHand = atoi(buffer);
+    while (1) {
+        // Receive the hidden hand from the server
+        recv(clientSocket, buffer, sizeof(buffer), 0);
+        int hiddenHand = atoi(buffer);
 
-    // Get user input for the guess
-    printf("Enter your guess (0 or 1): ");
-    scanf("%d", &clientGuess);
+        // Get user input for the guess
+        printf("\nEnter your guess (0 or 1, x to exit):");
+        scanf("%s", buffer);
 
-    // Send the guess to the server
-    sprintf(buffer, "%d", clientGuess);
-    send(clientSocket, buffer, strlen(buffer), 0);
+        // Send the guess to the server
+        send(clientSocket, buffer, strlen(buffer), 0);
 
-    // Receive and print the result
-    recv(clientSocket, buffer, sizeof(buffer), 0);
-    printf("%s\n", buffer);
+        if (buffer[0] == 'x') {
+            // Exit the game if 'x' is entered
+            break;
+        }
+
+        // Receive and print the result
+        recv(clientSocket, buffer, sizeof(buffer), 0);
+        printf("%s\n", buffer);
+    }
 
     // Clean up Winsock
     closesocket(clientSocket);
